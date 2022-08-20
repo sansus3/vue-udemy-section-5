@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router';
 import { useRoute } from 'vue-router';
 import { useGetData } from '../composables/useGetData';
+import { useStorePokemon } from '../stores/pokemon';
 
 
 export default{
@@ -11,10 +12,15 @@ export default{
         const route = useRoute();
         getData(`https://pokeapi.co/api/v2/pokemon/${route.params.name}`);
         const handleBack = () => {
-            router.push({name:'home'})
-        }       
+            router.push({name:'home'});
+        } 
+        
+        //Parte de Pinia
+        const {addFavorites,isInFavorites} = useStorePokemon();
         return{
             handleBack,
+            addFavorites,
+            isInFavorites,
             data,
             loading,
             error,
@@ -40,7 +46,10 @@ export default{
         <div v-if="error" class="alert alert-danger mt-2">
             {{error.message}}
         </div>
-       
-        <button @click="handleBack" class="btn btn-primary mt-2">Volver</button>
+        <div class="row">
+            <button @click="handleBack" class="btn btn-primary mt-2">Volver</button>
+            <button :disabled="isInFavorites(data?.id)" @click="addFavorites(data)" class="btn btn-primary mt-2">Añadir a favoritos</button>
+        </div>
+        
     </div>
 </template>

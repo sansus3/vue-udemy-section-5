@@ -14,6 +14,11 @@ export const routes = [
         name: 'pokemon',
         component: () => import('../views/PokemonView.vue')
     },
+    {
+        path:'/favorites',
+        name: 'favorites',
+        component: () => import('../views/FavoritesView.vue')
+    },
     // will match everything and put it under `$route.params.pathMatch`
     { 
         path: '/:pathMatch(.*)*', 
